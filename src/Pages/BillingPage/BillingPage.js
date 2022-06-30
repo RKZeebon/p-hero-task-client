@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import AddBilling from '../Modal/AddBilling';
+import DeleteModal from '../Modal/DeleteModal';
 import UpdateBilling from '../Modal/UpdateBilling';
 import BillingData from './BillingData';
 
 const BillingPage = () => {
     const [addModal, setAddModal] = useState(false)
     const [updateModal, setUpdateModal] = useState(false)
+    const [deleteModal, setDeleteModal] = useState(false)
     const [selectedBill, setSelectedBill] = useState({})
     const [billings, setBllings] = useState([])
     const [totalItem, setTotalItem] = useState(0)
@@ -20,7 +22,7 @@ const BillingPage = () => {
                 setBllings((data.blling))
                 setTotalItem(data.count)
             })
-    }, [selectedPage, addModal, updateModal])
+    }, [selectedPage, addModal, updateModal, deleteModal])
 
     const handleAddBlling = (e) => {
         e.preventDefault()
@@ -52,12 +54,18 @@ const BillingPage = () => {
             });
     }
 
-    const handleUpdating = async (id) => {
+    const handleSelecting = async (e) => {
+        const id = e.id
 
         await fetch(`http://localhost:5000/api/update-billing/${id}`)
             .then(res => res.json())
             .then(data => setSelectedBill(data));
-        setUpdateModal(true)
+        if (e.isUpdating) {
+            setUpdateModal(true)
+        }
+        if (e.isDeleting) {
+            setDeleteModal(true)
+        }
     }
 
 
@@ -78,6 +86,12 @@ const BillingPage = () => {
             {
                 updateModal && <UpdateBilling
                     setUpdateModal={setUpdateModal}
+                    selectedBill={selectedBill}
+                />
+            }
+            {
+                deleteModal && <DeleteModal
+                    setDeleteModal={setDeleteModal}
                     selectedBill={selectedBill}
                 />
             }
@@ -118,7 +132,7 @@ const BillingPage = () => {
                                 billings.map(b => <BillingData
                                     key={b._id}
                                     billing={b}
-                                    handleUpdating={handleUpdating}
+                                    handleSelecting={handleSelecting}
                                 />)
                             }
 

@@ -2,6 +2,7 @@ import React from 'react';
 
 const UpdateBilling = ({ setUpdateModal, selectedBill }) => {
     const { _id: id, name, email, phone, amount } = selectedBill
+
     let errorMessage;
     const handleUpdate = (e) => {
         e.preventDefault()

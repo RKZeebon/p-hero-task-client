@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BillingData = ({ billing, handleUpdating }) => {
+const BillingData = ({ billing, handleSelecting }) => {
 
     const { _id: id, name, email, phone, amount } = billing
 
@@ -12,7 +12,11 @@ const BillingData = ({ billing, handleUpdating }) => {
             <td className='text-center'>{email}</td>
             <td className='text-center'>{phone}</td>
             <td className='text-center'>{amount}</td>
-            <td className='text-center'><button onClick={() => handleUpdating(id)} className='btn btn-sm'>Edit</button> | <button className='btn btn-sm bg-red-600 border-none'>Delete</button></td>
+            <td className='text-center'><button
+                onClick={() => handleSelecting({ id, isUpdating: true })}
+                className='btn btn-sm'>Edit</button> | <button
+                    onClick={() => handleSelecting({ id, isDeleting: true })}
+                    className='btn btn-sm bg-red-600 border-none'>Delete</button></td>
         </tr>
     );
 };
