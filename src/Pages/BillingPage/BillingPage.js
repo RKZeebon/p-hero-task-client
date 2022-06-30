@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddBilling from '../Modal/AddBilling';
 import BillingData from './BillingData';
 
 const BillingPage = () => {
     const [openModal, setOpenModal] = useState(false)
+    const [billings, setBllings] = useState([])
+
+    useEffect(() => {
+
+        fetch('http://localhost:5000/api/billing-list')
+            .then(res => res.json())
+            .then(data => setBllings(data))
+    }, [])
+
 
     return (
         <div className='mx-16'>
@@ -44,9 +53,11 @@ const BillingPage = () => {
                         </thead>
                         <tbody>
                             {/* <!-- row 1 --> */}
-                            <BillingData />
-                            <BillingData />
-                            <BillingData />
+                            {
+                                billings.map(b => <BillingData
+                                    key={b._id}
+                                    billing={b} />)
+                            }
 
                         </tbody>
                     </table>
