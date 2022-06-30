@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import AddBilling from '../Modal/AddBilling';
+import UpdateBilling from '../Modal/UpdateBilling';
 import BillingData from './BillingData';
 
 const BillingPage = () => {
-    const [openModal, setOpenModal] = useState(false)
+    const [addModal, setAddModal] = useState(false)
+    const [updateModal, setUpdateModal] = useState(false)
+    const [selectedBill, setSelectedBill] = useState({})
     const [billings, setBllings] = useState([])
     const [totalItem, setTotalItem] = useState(0)
     const [selectedPage, setSelectedPage] = useState(0)
@@ -17,7 +20,47 @@ const BillingPage = () => {
                 setBllings((data.blling))
                 setTotalItem(data.count)
             })
-    }, [selectedPage])
+    }, [selectedPage, addModal, updateModal])
+
+    const handleAddBlling = (e) => {
+        e.preventDefault()
+        const name = e.target.name.value
+        const email = e.target.email.value
+        const phone = e.target.phone.value
+        const amount = e.target.amount.value
+        setAddModal(false)
+        console.log(name, email, phone, amount);
+
+        fetch('http://localhost:5000/api/add-billing', {
+            method: 'POST',
+            body: JSON.stringify({
+                name,
+                email,
+                phone,
+                amount
+            }),
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.acknowledged) {
+                    e.target.reset()
+                }
+            });
+    }
+
+    const handleUpdating = async (id) => {
+
+        await fetch(`http://localhost:5000/api/update-billing/${id}`)
+            .then(res => res.json())
+            .then(data => setSelectedBill(data));
+        setUpdateModal(true)
+    }
+
+
 
     const handlePageClick = (data) => {
         setSelectedPage(data.selected);
@@ -27,7 +70,16 @@ const BillingPage = () => {
         <div className='mx-16'>
 
             {
-                openModal && <AddBilling setOpenModal={setOpenModal} />
+                addModal && <AddBilling
+                    handleAddBlling={handleAddBlling}
+                    setAddModal={setAddModal}
+                />
+            }
+            {
+                updateModal && <UpdateBilling
+                    setUpdateModal={setUpdateModal}
+                    selectedBill={selectedBill}
+                />
             }
 
             <div className='flex justify-between items-center bg-gray-400 px-5 mt-8 rounded'>
@@ -40,7 +92,7 @@ const BillingPage = () => {
                     </div>
                 </div>
                 <div className="">
-                    <button onClick={() => setOpenModal(true)} className="btn my-1">Add new billing</button>
+                    <button onClick={() => setAddModal(true)} className="btn my-1">Add new billing</button>
                 </div>
 
             </div>
@@ -65,7 +117,9 @@ const BillingPage = () => {
                             {
                                 billings.map(b => <BillingData
                                     key={b._id}
-                                    billing={b} />)
+                                    billing={b}
+                                    handleUpdating={handleUpdating}
+                                />)
                             }
 
                         </tbody>
