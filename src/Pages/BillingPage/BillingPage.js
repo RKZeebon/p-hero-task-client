@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import AddBilling from '../Modal/AddBilling';
 import BillingData from './BillingData';
 
 const BillingPage = () => {
     const [openModal, setOpenModal] = useState(false)
     const [billings, setBllings] = useState([])
-
+    const [totalItem, setTotalItem] = useState(0)
+    const [selectedPage, setSelectedPage] = useState(0)
+    const pageCount = Math.ceil(totalItem / 10)
     useEffect(() => {
 
-        fetch('http://localhost:5000/api/billing-list')
+        fetch(`http://localhost:5000/api/billing-list?page=${selectedPage}`)
             .then(res => res.json())
-            .then(data => setBllings(data))
-    }, [])
+            .then(data => {
+                setBllings((data.blling))
+                setTotalItem(data.count)
+            })
+    }, [selectedPage])
 
+    const handlePageClick = (data) => {
+        setSelectedPage(data.selected);
+    }
 
     return (
         <div className='mx-16'>
@@ -62,6 +71,20 @@ const BillingPage = () => {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div>
+                <ReactPaginate
+                    previousLabel="<<"
+                    nextLabel=">>"
+                    breakLabel="..."
+                    pageCount={pageCount}
+                    marginPagesDisplayed={3}
+                    onPageChange={handlePageClick}
+                    containerClassName="flex justify-center mt-4 gap-2 mb-12"
+                    pageClassName="px-2 rounded font-semibold"
+                    activeClassName='bg-blue-500'
+                />
             </div>
         </div>
     );
