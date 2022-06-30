@@ -17,7 +17,9 @@ const layout = () => {
                     </div>
                 </div>
             </header >
-            <BillingPage />
+            <div className=''>
+                <BillingPage />
+            </div>
         </div >
     );
 };

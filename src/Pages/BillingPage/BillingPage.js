@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddBilling from '../Modal/AddBilling';
 import BillingData from './BillingData';
 
 const BillingPage = () => {
+    const [openModal, setOpenModal] = useState(false)
+
     return (
         <div className='mx-16'>
+
+            {
+                openModal && <AddBilling setOpenModal={setOpenModal} />
+            }
+
             <div className='flex justify-between items-center bg-gray-400 px-5 mt-8 rounded'>
                 <div className="flex justify-between items-center">
                     <div className="mr-5">
@@ -14,7 +22,7 @@ const BillingPage = () => {
                     </div>
                 </div>
                 <div className="">
-                    <button className="btn my-1">Add new billing</button>
+                    <button onClick={() => setOpenModal(true)} className="btn my-1">Add new billing</button>
                 </div>
 
             </div>
