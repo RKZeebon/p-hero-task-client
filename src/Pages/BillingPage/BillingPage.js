@@ -14,15 +14,16 @@ const BillingPage = () => {
     const [totalItem, setTotalItem] = useState(0)
     const [selectedPage, setSelectedPage] = useState(0)
     const pageCount = Math.ceil(totalItem / 10)
+    const [searchText, setSearchText] = useState('')
     useEffect(() => {
 
-        fetch(`http://localhost:5000/api/billing-list?page=${selectedPage}`)
+        fetch(`http://localhost:5000/api/billing-list?page=${selectedPage}&query=${searchText}`)
             .then(res => res.json())
             .then(data => {
                 setBllings((data.blling))
                 setTotalItem(data.count)
             })
-    }, [selectedPage, addModal, updateModal, deleteModal])
+    }, [selectedPage, addModal, updateModal, deleteModal, searchText])
 
     const handleAddBlling = (e) => {
         e.preventDefault()
@@ -68,6 +69,11 @@ const BillingPage = () => {
         }
     }
 
+    const handleSearch = (event) => {
+        const text = event.target.value
+        setSearchText(text);
+
+    }
 
 
     const handlePageClick = (data) => {
@@ -102,7 +108,7 @@ const BillingPage = () => {
                         <p className="text-xl font-semibold">Bllings</p>
                     </div>
                     <div className="">
-                        <input type="text" placeholder="Search" className="p-1 input-bordered rounded" />
+                        <input onChange={handleSearch} type="text" placeholder="Search" className="p-1 input-bordered rounded" />
                     </div>
                 </div>
                 <div className="">
@@ -150,7 +156,7 @@ const BillingPage = () => {
                     marginPagesDisplayed={3}
                     onPageChange={handlePageClick}
                     containerClassName="flex justify-center mt-4 gap-2 mb-12"
-                    pageClassName="px-2 rounded font-semibold"
+                    pageClassName="px-2 rounded border font-semibold"
                     activeClassName='bg-blue-500'
                 />
             </div>
