@@ -5,7 +5,7 @@ import DeleteModal from '../Modal/DeleteModal';
 import UpdateBilling from '../Modal/UpdateBilling';
 import BillingData from './BillingData';
 
-const BillingPage = () => {
+const BillingPage = ({ setIsReload, isReload }) => {
     const [addModal, setAddModal] = useState(false)
     const [updateModal, setUpdateModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
@@ -22,7 +22,8 @@ const BillingPage = () => {
             .then(data => {
                 setBllings((data.blling))
                 setTotalItem(data.count)
-            })
+            });
+        setIsReload(!isReload)
     }, [selectedPage, addModal, updateModal, deleteModal, searchText])
 
     const handleAddBlling = (e) => {
@@ -32,7 +33,6 @@ const BillingPage = () => {
         const phone = e.target.phone.value
         const amount = e.target.amount.value
         setAddModal(false)
-        console.log(name, email, phone, amount);
 
         fetch('http://localhost:5000/api/add-billing', {
             method: 'POST',
@@ -48,7 +48,7 @@ const BillingPage = () => {
         })
             .then((response) => response.json())
             .then(data => {
-                console.log(data);
+
                 if (data.acknowledged) {
                     e.target.reset()
                 }
@@ -102,17 +102,17 @@ const BillingPage = () => {
                 />
             }
 
-            <div className='flex justify-between items-center bg-gray-400 px-5 mt-8 rounded'>
+            <div className='flex justify-between items-center bg-gray-600 px-5 mt-8 rounded'>
                 <div className="flex justify-between items-center">
                     <div className="mr-5">
-                        <p className="text-xl font-semibold">Bllings</p>
+                        <p className="text-xl font-semibold text-white">Bllings</p>
                     </div>
                     <div className="">
                         <input onChange={handleSearch} type="text" placeholder="Search" className="p-1 input-bordered rounded" />
                     </div>
                 </div>
                 <div className="">
-                    <button onClick={() => setAddModal(true)} className="btn my-1">Add new billing</button>
+                    <button onClick={() => setAddModal(true)} className="btn bg-gray-400 my-1">Add new billing</button>
                 </div>
 
             </div>
@@ -157,7 +157,7 @@ const BillingPage = () => {
                     onPageChange={handlePageClick}
                     containerClassName="flex justify-center mt-4 gap-2 mb-12"
                     pageClassName="px-2 rounded border font-semibold"
-                    activeClassName='bg-blue-500'
+                    activeClassName='bg-gray-400'
                 />
             </div>
         </div>
