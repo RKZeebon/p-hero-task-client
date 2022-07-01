@@ -7,7 +7,7 @@ const Layout = () => {
     const [total, setTotal] = useState(0)
     const [isReload, setIsReload] = useState(false)
     useEffect(() => {
-        fetch('http://localhost:5000/api/billing-list')
+        fetch('https://p-hero-rk.herokuapp.com/api/billing-list')
             .then(res => res.json())
             .then(data => setBillings(data))
     }, [isReload])

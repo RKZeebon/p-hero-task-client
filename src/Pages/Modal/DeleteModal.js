@@ -4,7 +4,7 @@ const DeleteModal = ({ setDeleteModal, selectedBill }) => {
     const { _id: id } = selectedBill
 
     const handleDelete = () => {
-        fetch(`http://localhost:5000/api/delete-billing/${id}`, {
+        fetch(`https://p-hero-rk.herokuapp.com/api/delete-billing/${id}`, {
             method: "DELETE"
         })
             .then(res => res.json())
@@ -16,7 +16,7 @@ const DeleteModal = ({ setDeleteModal, selectedBill }) => {
     }
     return (
         <div className='absolute flex items-center justify-center left-16 right-16 bottom-0 top-0  bg-black/70 z-50'>
-            <div class="w-5/6 lg:w-1/4 p-8 bg-white rounded">
+            <div className="w-5/6 lg:w-1/4 p-8 bg-white rounded">
                 <h2 className='text-xl font-semibold text-red-600 mb-4'>Are You Sure? You want to delete this billing?</h2>
                 <h2 className='text-xl font-semibold mb-12'>Billing Id: <span className='font-bold'>{id.slice(-10)}</span></h2>
                 <button

@@ -10,7 +10,7 @@ const SignUp = () => {
         const pass = e.target.pass.value
         const confirmPass = e.target.confirmPass.value
         if (pass === confirmPass) {
-            fetch('http://localhost:5000/api/registration', {
+            fetch('https://p-hero-rk.herokuapp.com/api/registration', {
                 method: 'POST',
                 body: JSON.stringify({
                     name, email, pass

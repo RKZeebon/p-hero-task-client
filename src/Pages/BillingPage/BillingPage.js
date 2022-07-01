@@ -17,7 +17,7 @@ const BillingPage = ({ setIsReload, isReload }) => {
     const [searchText, setSearchText] = useState('')
     useEffect(() => {
 
-        fetch(`http://localhost:5000/api/billing-list?page=${selectedPage}&query=${searchText}`)
+        fetch(`https://p-hero-rk.herokuapp.com/api/billing-list?page=${selectedPage}&query=${searchText}`)
             .then(res => res.json())
             .then(data => {
                 setBllings((data.blling))
@@ -34,7 +34,7 @@ const BillingPage = ({ setIsReload, isReload }) => {
         const amount = e.target.amount.value
         setAddModal(false)
 
-        fetch('http://localhost:5000/api/add-billing', {
+        fetch('https://p-hero-rk.herokuapp.com/api/add-billing', {
             method: 'POST',
             body: JSON.stringify({
                 name,
@@ -58,7 +58,7 @@ const BillingPage = ({ setIsReload, isReload }) => {
     const handleSelecting = async (e) => {
         const id = e.id
 
-        await fetch(`http://localhost:5000/api/update-billing/${id}`)
+        await fetch(`https://p-hero-rk.herokuapp.com/api/update-billing/${id}`)
             .then(res => res.json())
             .then(data => setSelectedBill(data));
         if (e.isUpdating) {
@@ -119,8 +119,8 @@ const BillingPage = ({ setIsReload, isReload }) => {
 
             {/* Table */}
             <div className='mt-4'>
-                <div class="overflow-x-auto">
-                    <table class="table table-zebra w-full">
+                <div className="overflow-x-auto">
+                    <table className="table table-zebra w-full">
                         {/* <!-- head --> */}
                         <thead>
                             <tr>
